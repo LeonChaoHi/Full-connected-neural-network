@@ -1,4 +1,5 @@
 import numpy as np
+import model
 
 
 class trainer:
@@ -18,6 +19,9 @@ class trainer:
             input ([np.ndarray]): [Input data]
         """
         model = self.model
+        model = model.model()
+        model.input_layer.data = 
+        
         
         
     def backProp(self, parameter_list):
