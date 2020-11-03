@@ -1,8 +1,8 @@
 import numpy as np
-import model
+from model import Model
 
 
-class trainer:
+class Trainer:
     def __init__(self, model, input_data, output_data, learning_rate, batch_size, steps, epochs):
       self.model = model
       self.input = input_data
@@ -12,20 +12,4 @@ class trainer:
       self.steps = steps
       self.epochs = epochs
       
-    def feedForward(self, input):
-        """Feedforward by input to every layer of model.
-
-        Args:
-            input ([np.ndarray]): [Input data]
-        """
-        model = self.model
-        model = model.model()
-        model.input_layer.data = 
-        
-        
-        
-    def backProp(self, parameter_list):
-        """
-        docstring
-        """
-        pass
+    
