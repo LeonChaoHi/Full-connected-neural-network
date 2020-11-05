@@ -60,8 +60,8 @@ class Model:
     """
     def __init__(self, in_out_size, n_hidden_layer, layer_size):
         assert type(in_out_size) == type(in_out_size) == tuple
-        assert type(n_hidden_layer) == int
-        self.num_layer = n_hidden_layer
+        assert type(n_hidden_layer) == int and len(layer_size) == n_hidden_layer
+        self.num_layer = n_hidden_layer         # number of hidden layers
         self.in_size = in_out_size[0]
         self.out_size = in_out_size[1]
         self.layer_size = layer_size
@@ -92,11 +92,37 @@ class Model:
         self.output_layer.updateData(new_data)
             
         
-    def backProp(self, lr, loss):
+    def backProp(self, lr, y):
         """Backpropagation
         Args:
             lr (float): learning rate
             loss (float): loss computed from the loss function
         """
+        assert y.shape == self.output_layer.data.shape
         
-
+        out = self.output_layer
+        hs = self.hidden_layers
+        _in = self.input_layer
+        
+        def derivative_sigmoid(x):
+            return x * (1 - x)
+        
+        # update output layer's parameters
+        out.dz = derivative_sigmoid(out.data) * (out - y)
+        o_dw = out.dz.dot(hs[-1].T)
+        o_db = out.dz
+        out.updateWeights(out.weights-lr*o_dw, out.intercept-lr*o_db)
+        
+        # update hidden layers' parameters, from last to begin
+        for i in range(self.num_layer-1, -1, -1):
+            prev_h =  _in if i==0 else hs[i-1]
+            h = hs[i]
+            next_h = out if i==self.num_layer-1 else hs[i+1]
+            
+            h.dz = derivative_sigmoid(h.data) * next_h.weights.T.dot(next_h.dz)
+            h_dw = h.dz.dot(prev_h.data.T)
+            h_db = h.dz
+            h.updateWeights(h.weights-lr*h_dw, h.intercept-lr*h_db)
+        
+        return
+        
