@@ -16,7 +16,7 @@ def main():
     y[list(range(n_samples)), iris.target] = 1
     
     # construct and train model
-    model = Model((4, 3), (9, 10))
+    model = Model((4, 3), (9, 10, 10))
     trainer = Trainer(model, x, y, 0.01, 1000)
     loss_list = trainer.fit()
     plt.plot(loss_list)

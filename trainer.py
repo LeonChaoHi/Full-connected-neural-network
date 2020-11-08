@@ -19,12 +19,15 @@ class Trainer:
         total_loss = list()
         for epoch in range(self.epochs):
             epoch_loss = list()
+            epoch_accuracy = list()
             for i in range(datasize):
                 model.feedForward(self._input[i].reshape(model.in_size, 1))
                 epoch_loss.append(0.5 * ((model.output_layer.data - self.output[i].reshape(model.out_size, 1))**2).sum())
+                epoch_accuracy.append(int(model.output_layer.data.argmax()==self.output[i].argmax()))
                 model.backProp(self.lr, self.output[i].reshape(model.out_size, 1))
-            epoch_loss = sum(epoch_loss)/datasize
+            epoch_loss = sum(epoch_loss) / datasize
+            epoch_accuracy = sum(epoch_accuracy) / datasize
             total_loss.append(epoch_loss)
             if epoch%100 == 0:
-                print("Epoch: ", epoch, "  Loss:", epoch_loss)
+                print("Epoch: ", epoch, "  Loss:", epoch_loss, " Accuracy:", epoch_accuracy)
         return total_loss

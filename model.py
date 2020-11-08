@@ -22,7 +22,7 @@ class NNLayer:
             self.unactivated = self.weights = self.intercept = None
         else:
             self.unactivated = np.zeros_like(self.data)
-            self.weights = np.random.rand(self._size, self.prev_size)
+            self.weights = np.random.rand(self._size, self.prev_size) - 0.5
             self.intercept = np.zeros_like(self.data)
 
     def updateData(self, _input):
